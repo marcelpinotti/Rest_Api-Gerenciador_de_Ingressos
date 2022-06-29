@@ -4,7 +4,11 @@ public enum TipoDoEvento {
     
     MUSICAL,
     ESPORTIVO,
-    CONGRESSO,
     RELIGIOSO,
+    SOCIAL,
+    EXPOSIÇÃO,
+    TREINAMENTO,
+    CONGRESSO,
+    SIMPÓSIO,
     PALESTRA
 }
