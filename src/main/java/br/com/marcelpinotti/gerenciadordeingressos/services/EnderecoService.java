@@ -35,15 +35,6 @@ public class EnderecoService {
         }
     }
 
-    private void buscarEnderecoPorCepViaCEPParaAtualizar(String cep) {
-
-        Endereco endereco = viaCepService.consultarCep(cep);
-
-        if (endereco.getCep() == null) {
-            throw new RuntimeException("Endereço não encontrado");
-        }
-    }
-
     private void buscarEnderecoPorCepParaSalvar(String cep) {
 
         Optional<Endereco> endereco = enderecoRepository.findById(cep);
@@ -64,7 +55,7 @@ public class EnderecoService {
         }
     }
 
-    public List<EnderecoDTO> listaDeEnderecos() {
+    public List<EnderecoDTO> listarTodosOsEnderecos() {
 
         List<Endereco> enderecos = enderecoRepository.findAll();
 
@@ -89,12 +80,18 @@ public class EnderecoService {
         enderecoRepository.deleteById(cep);
     }
 
-    public void atualizarEndereco(String cep, EnderecoDTO enderecoDTO) {
+    public Endereco atualizarEndereco(String cep, EnderecoDTO enderecoAtualizado) {
         buscarEnderecoPorCep(cep);
-        buscarEnderecoPorCepViaCEPParaAtualizar(cep);
-        Endereco endereco = mapper.map(enderecoDTO, Endereco.class);
 
-        enderecoRepository.save(endereco);
+        Endereco endereco = new Endereco();
+
+        endereco.setCep(cep);
+        endereco.setLogradouro(enderecoAtualizado.getLogradouro());
+        endereco.setBairro(enderecoAtualizado.getBairro());
+        endereco.setLocalidade(enderecoAtualizado.getLocalidade());
+        endereco.setUf(enderecoAtualizado.getUf());
+
+        return enderecoRepository.save(endereco);
     }
 
 }
