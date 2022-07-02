@@ -1,4 +1,4 @@
-package br.com.marcelpinotti.gerenciadordeingressos.services.ViaCepService;
+package br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService;
 
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -3,7 +3,7 @@ package br.com.marcelpinotti.gerenciadordeingressos.services;
 import br.com.marcelpinotti.gerenciadordeingressos.dtos.EnderecoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
-import br.com.marcelpinotti.gerenciadordeingressos.services.ViaCepService.ViaCepService;
+import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

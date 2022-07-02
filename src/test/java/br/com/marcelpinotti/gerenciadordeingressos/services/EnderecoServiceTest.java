@@ -4,7 +4,7 @@ import br.com.marcelpinotti.gerenciadordeingressos.dtos.EnderecoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
 
-import br.com.marcelpinotti.gerenciadordeingressos.services.ViaCepService.ViaCepService;
+import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.mockito.Mockito.times;
 
 @SpringBootTest
 public class EnderecoServiceTest {
