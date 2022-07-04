@@ -34,7 +34,7 @@ public class ViaCepServiceTest {
     private ViaCepService viaCepService;
 
 
-    // Criar uma invocação simulado para ter um Mock pré-carregado como conteúdo da resposta.
+    // Criar uma invocação simulada para ter um Mock pré-carregado como conteúdo da resposta.
     // Essa invocação vai atingir as anotações e garantir que tudo estará funcionando.
     private void buildFeignClient(MockClient mockClient) {
 
