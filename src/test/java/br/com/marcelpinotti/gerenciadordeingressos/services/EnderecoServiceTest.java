@@ -4,7 +4,6 @@ import br.com.marcelpinotti.gerenciadordeingressos.dtos.EnderecoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
 
-import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ public class EnderecoServiceTest {
     private EnderecoRepository enderecoRepository;
 
     @Mock
-    private ViaCepService viaCepService;
+    private br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService viaCepService;
 
     private void iniciandoEnderecos() {
         endereco = new Endereco(CEP, LOGRADOURO, BAIRRO, CIDADE, UF);
