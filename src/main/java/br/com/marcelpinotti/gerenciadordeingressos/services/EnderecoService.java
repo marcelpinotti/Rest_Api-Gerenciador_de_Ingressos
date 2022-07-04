@@ -2,6 +2,8 @@ package br.com.marcelpinotti.gerenciadordeingressos.services;
 
 import br.com.marcelpinotti.gerenciadordeingressos.dtos.EnderecoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
+import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectExistsException;
+import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundException;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
 import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.modelmapper.ModelMapper;
@@ -29,7 +31,7 @@ public class EnderecoService {
         Endereco endereco = viaCepService.consultarCep(cep);
 
         if (endereco.getCep() == null) {
-            throw new RuntimeException("Endereço não encontrado");
+            throw new ObjectNotFoundException("Endereço não encontrado");
         } else {
             return endereco;
         }
@@ -40,7 +42,7 @@ public class EnderecoService {
         Optional<Endereco> endereco = enderecoRepository.findById(cep);
 
         if (endereco.isPresent()){
-            throw new RuntimeException("O Endereço já existe");
+            throw new ObjectExistsException("O Endereço já existe na base de dados");
         }
     }
 
@@ -51,7 +53,7 @@ public class EnderecoService {
         if (enderecoOptional.isPresent()){
             return mapper.map(enderecoOptional.get(), EnderecoDTO.class);
         } else {
-            throw new RuntimeException("Endereço não encontrado");
+            throw new ObjectNotFoundException("Endereço não encontrado");
         }
     }
 
