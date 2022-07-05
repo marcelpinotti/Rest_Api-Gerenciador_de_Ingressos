@@ -18,12 +18,12 @@ public class EnderecoService {
 
     private EnderecoRepository enderecoRepository;
     private ViaCepService viaCepService;
-
     private ModelMapper mapper;
 
-    public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService) {
+    public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService, ModelMapper mapper) {
         this.enderecoRepository = enderecoRepository;
         this.viaCepService = viaCepService;
+        this.mapper = mapper;
     }
 
     private Endereco buscarEnderecoPorCepViaCEP(String cep) {

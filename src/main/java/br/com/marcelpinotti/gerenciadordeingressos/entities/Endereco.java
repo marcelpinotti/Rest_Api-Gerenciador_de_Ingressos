@@ -1,10 +1,9 @@
 package br.com.marcelpinotti.gerenciadordeingressos.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,20 +13,24 @@ public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "cep")
-    @NotNull(message = "O CEP deve seguir esse formato, ex. 12345-678.")
+    @NotBlank(message = "O CEP deve seguir esse formato, ex. 12345-678.")
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "O CEP deve seguir esse formato, ex. 12345-678.")
     private String cep;
 
     @Column(name = "logradouro")
+    @NotBlank(message = "O logradouro precisa estar preenchido.")
     private String logradouro;
 
     @Column(name = "bairro")
+    @NotBlank(message = "O bairro precisa estar preenchido.")
     private String bairro;
 
     @Column(name = "cidade")
+    @NotBlank(message = "A cidade precisa estar preenchida.")
     private String localidade;
 
     @Column(name = "estado",length = 20)
+    @NotBlank(message = "O estado precisa estar preenchido.")
     private String uf;
 
     public Endereco() {
