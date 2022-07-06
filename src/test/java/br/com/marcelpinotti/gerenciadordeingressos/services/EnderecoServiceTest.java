@@ -22,10 +22,12 @@ import java.util.Optional;
 public class EnderecoServiceTest {
 
     private static final String CEP = "03201-000";
+    private static final String CEPSemHifem = "03201000";
     private static final String LOGRADOURO = "Rua das Cobéias";
     private static final String BAIRRO = "Vila Bela";
     private static final String CIDADE = "São Paulo";
     private static final String UF = "SP";
+
     private Endereco endereco;
     private EnderecoDTO enderecoDTO;
     private Optional<Endereco> enderecoOptional;
@@ -55,11 +57,27 @@ public class EnderecoServiceTest {
     }
 
     @Test
-    void deveRetornarUmEnderecoAoBuscarEnderecoPorCep() {
+    void deveRetornarUmEnderecoAoBuscarEnderecoPorCepComHifen() {
         Mockito.when(enderecoRepository.findById(Mockito.anyString())).thenReturn(enderecoOptional);
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(enderecoDTO);
 
         EnderecoDTO enderecoDeBusca = enderecoService.buscarEnderecoPorCep(CEP);
+
+        Assertions.assertNotNull(enderecoDeBusca);
+        Assertions.assertEquals(EnderecoDTO.class, enderecoDeBusca.getClass());
+        Assertions.assertEquals(CEP, enderecoDeBusca.getCep());
+        Assertions.assertEquals(LOGRADOURO, enderecoDeBusca.getLogradouro());
+        Assertions.assertEquals(BAIRRO, enderecoDeBusca.getBairro());
+        Assertions.assertEquals(CIDADE, enderecoDeBusca.getLocalidade());
+        Assertions.assertEquals(UF, enderecoDeBusca.getUf());
+    }
+
+    @Test
+    void deveRetornarUmEnderecoAoBuscarEnderecoPorCepSemHifen() {
+        Mockito.when(enderecoRepository.findById(Mockito.anyString())).thenReturn(enderecoOptional);
+        Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(enderecoDTO);
+
+        EnderecoDTO enderecoDeBusca = enderecoService.buscarEnderecoPorCep(CEPSemHifem);
 
         Assertions.assertNotNull(enderecoDeBusca);
         Assertions.assertEquals(EnderecoDTO.class, enderecoDeBusca.getClass());
@@ -84,7 +102,7 @@ public class EnderecoServiceTest {
     }
 
     @Test
-    void deveSalvarUmEnderecoEmSalvarEndereco() {
+    void deveSalvarUmEnderecoEmSalvarEnderecoOndeOCepVemComHifen() {
         Mockito.when(enderecoRepository.save(Mockito.any())).thenReturn(endereco);
         Mockito.when(viaCepService.consultarCep(Mockito.anyString())).thenReturn(endereco);
 
@@ -92,11 +110,29 @@ public class EnderecoServiceTest {
 
         Assertions.assertNotNull(enderecoViaCep);
         Assertions.assertEquals(Endereco.class, enderecoViaCep.getClass());
+        Assertions.assertEquals(CEP, enderecoViaCep.getCep());
         Assertions.assertEquals(LOGRADOURO, enderecoViaCep.getLogradouro());
         Assertions.assertEquals(BAIRRO, enderecoViaCep.getBairro());
         Assertions.assertEquals(CIDADE, enderecoViaCep.getLocalidade());
         Assertions.assertEquals(UF, enderecoViaCep.getUf());
     }
+
+    @Test
+    void deveSalvarUmEnderecoEmSalvarEnderecoOndeOCepVemSemHifen() {
+        Mockito.when(enderecoRepository.save(Mockito.any())).thenReturn(endereco);
+        Mockito.when(viaCepService.consultarCep(Mockito.anyString())).thenReturn(endereco);
+
+        Endereco enderecoViaCep = enderecoService.salvarEndereco(CEPSemHifem);
+
+        Assertions.assertNotNull(enderecoViaCep);
+        Assertions.assertEquals(Endereco.class, enderecoViaCep.getClass());
+        Assertions.assertEquals(CEP, enderecoViaCep.getCep());
+        Assertions.assertEquals(LOGRADOURO, enderecoViaCep.getLogradouro());
+        Assertions.assertEquals(BAIRRO, enderecoViaCep.getBairro());
+        Assertions.assertEquals(CIDADE, enderecoViaCep.getLocalidade());
+        Assertions.assertEquals(UF, enderecoViaCep.getUf());
+    }
+
 
     @Test
     void deveDeletarUmEnderecoEmDeletarEndereco() {

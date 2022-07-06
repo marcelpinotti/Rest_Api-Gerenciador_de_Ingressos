@@ -7,8 +7,10 @@ import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundExcep
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
 import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,10 +70,22 @@ public class EnderecoService {
         return listaEnderecos;
     }
 
+    private String formatarCep(String cep) {
+
+        String validar = cep.substring(5,6);
+
+        if(!validar.equals("-"))
+            cep = cep.substring(0, 5) + '-' + cep.substring(5);
+
+        return cep;
+    }
+
     public Endereco salvarEndereco(String cep) {
 
-        buscarEnderecoPorCepParaSalvar(cep);
-        Endereco enderecoViaCep = buscarEnderecoPorCepViaCEP(cep);
+        String cepFormatado = formatarCep(cep);
+
+        buscarEnderecoPorCepParaSalvar(cepFormatado);
+        Endereco enderecoViaCep = buscarEnderecoPorCepViaCEP(cepFormatado);
 
         return enderecoRepository.save(enderecoViaCep);
     }
@@ -83,11 +97,13 @@ public class EnderecoService {
     }
 
     public Endereco atualizarEndereco(String cep, EnderecoDTO enderecoAtualizado) {
-        buscarEnderecoPorCep(cep);
+
+        String cepFormatado = formatarCep(cep);
+        buscarEnderecoPorCep(cepFormatado);
 
         Endereco endereco = new Endereco();
 
-        endereco.setCep(cep);
+        endereco.setCep(cepFormatado);
         endereco.setLogradouro(enderecoAtualizado.getLogradouro());
         endereco.setBairro(enderecoAtualizado.getBairro());
         endereco.setLocalidade(enderecoAtualizado.getLocalidade());
