@@ -5,12 +5,13 @@ import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectExistsException;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundException;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
+import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepComLetras;
+import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepSemHifen;
+import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepFormatado;
 import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,7 +83,7 @@ public class EnderecoService {
 
     public Endereco salvarEndereco(String cep) {
 
-        String cepFormatado = formatarCep(cep);
+        String cepFormatado = String.valueOf(new CepSemHifen(new CepComLetras(new CepFormatado())));
 
         buscarEnderecoPorCepParaSalvar(cepFormatado);
         Endereco enderecoViaCep = buscarEnderecoPorCepViaCEP(cepFormatado);
