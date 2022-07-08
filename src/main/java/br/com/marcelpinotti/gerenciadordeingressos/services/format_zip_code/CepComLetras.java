@@ -1,6 +1,12 @@
 package br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code;
 
-public class CepComLetras extends FormatarCep{
+import org.springframework.stereotype.Component;
+
+@Component
+public class CepComLetras extends FormatarCep {
+
+    public CepComLetras(){
+    }
 
     public CepComLetras(FormatarCep proximo) {
         super(proximo);
@@ -9,7 +15,7 @@ public class CepComLetras extends FormatarCep{
     @Override
     public String formatar(String cep) {
 
-        if(!cep.matches("\\d")){
+        if(!cep.matches("\\d{5}-\\d{3}")){
             String nova = cep.replaceAll(cep,"00000-000");
             return nova;
         }

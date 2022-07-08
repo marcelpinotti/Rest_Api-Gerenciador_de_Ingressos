@@ -1,4 +1,4 @@
-package br.com.marcelpinotti.gerenciadordeingressos.services.format_zipe_code;
+package br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code;
 
 import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepComLetras;
 import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepFormatado;
@@ -11,9 +11,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class CepFormatadoTest {
+public class CepComLetrasTest {
 
     @InjectMocks
+    private CepComLetras cepComLetras;
+
+    @Mock
     private CepFormatado cepFormatado;
 
     @BeforeEach
@@ -22,13 +25,12 @@ public class CepFormatadoTest {
     }
 
     @Test
-    void deveRetornarOCepComHifen(){
+    void deveRetornarOCepComHifenEOitoZerosQuandoOCepContiverNumerosECaracteresEspeciais(){
+        String CepComLetras = "abcde-230";
 
-        String cep = "03201-000";
+        String cepFormatado = cepComLetras.formatar(CepComLetras);
 
-        String consultaCep = cepFormatado.formatar(cep);
-
-        Assertions.assertEquals("03201-000", cep);
+        Assertions.assertEquals("00000-000", cepFormatado);
 
     }
 }

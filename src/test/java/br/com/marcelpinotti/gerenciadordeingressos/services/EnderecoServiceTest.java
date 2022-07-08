@@ -4,6 +4,7 @@ import br.com.marcelpinotti.gerenciadordeingressos.dtos.EnderecoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
 
+import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.VerificarCep;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,9 @@ public class EnderecoServiceTest {
     private EnderecoService enderecoService;
 
     @Mock
+    private VerificarCep verificarCep;
+
+    @Mock
     private ModelMapper modelMapper;
 
     @Mock
@@ -60,6 +64,7 @@ public class EnderecoServiceTest {
     void deveRetornarUmEnderecoAoBuscarEnderecoPorCepComHifen() {
         Mockito.when(enderecoRepository.findById(Mockito.anyString())).thenReturn(enderecoOptional);
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(enderecoDTO);
+        Mockito.when(verificarCep.vericiacaoDeCep(Mockito.anyString())).thenReturn(CEP);
 
         EnderecoDTO enderecoDeBusca = enderecoService.buscarEnderecoPorCep(CEP);
 
@@ -76,6 +81,7 @@ public class EnderecoServiceTest {
     void deveRetornarUmEnderecoAoBuscarEnderecoPorCepSemHifen() {
         Mockito.when(enderecoRepository.findById(Mockito.anyString())).thenReturn(enderecoOptional);
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(enderecoDTO);
+        Mockito.when(verificarCep.vericiacaoDeCep(Mockito.anyString())).thenReturn(CEP);
 
         EnderecoDTO enderecoDeBusca = enderecoService.buscarEnderecoPorCep(CEPSemHifem);
 
@@ -105,6 +111,7 @@ public class EnderecoServiceTest {
     void deveSalvarUmEnderecoEmSalvarEnderecoOndeOCepVemComHifen() {
         Mockito.when(enderecoRepository.save(Mockito.any())).thenReturn(endereco);
         Mockito.when(viaCepService.consultarCep(Mockito.anyString())).thenReturn(endereco);
+        Mockito.when(verificarCep.vericiacaoDeCep(Mockito.anyString())).thenReturn(CEP);
 
         Endereco enderecoViaCep = enderecoService.salvarEndereco(CEP);
 
@@ -121,6 +128,7 @@ public class EnderecoServiceTest {
     void deveSalvarUmEnderecoEmSalvarEnderecoOndeOCepVemSemHifen() {
         Mockito.when(enderecoRepository.save(Mockito.any())).thenReturn(endereco);
         Mockito.when(viaCepService.consultarCep(Mockito.anyString())).thenReturn(endereco);
+        Mockito.when(verificarCep.vericiacaoDeCep(Mockito.anyString())).thenReturn(CEP);
 
         Endereco enderecoViaCep = enderecoService.salvarEndereco(CEPSemHifem);
 
@@ -137,6 +145,7 @@ public class EnderecoServiceTest {
     @Test
     void deveDeletarUmEnderecoEmDeletarEndereco() {
         Mockito.when(enderecoRepository.findById(Mockito.anyString())).thenReturn(enderecoOptional);
+        Mockito.when(enderecoService.buscarEnderecoPorCep(Mockito.any())).thenReturn(enderecoDTO);
         Mockito.doNothing().when(enderecoRepository).deleteById(Mockito.anyString());
 
         enderecoService.deletarEndereco(CEP);
@@ -147,6 +156,7 @@ public class EnderecoServiceTest {
     @Test
     void deveAtualizarUmEnderecoEmAtualizarEndereco() {
         Mockito.when(enderecoRepository.findById(Mockito.anyString())).thenReturn(enderecoOptional);
+        Mockito.when(enderecoService.buscarEnderecoPorCep(Mockito.any())).thenReturn(enderecoDTO);
         Mockito.when(enderecoRepository.save(Mockito.any())).thenReturn(endereco);
 
         Endereco enderecoViaCep = enderecoService.atualizarEndereco(CEP, enderecoDTO);

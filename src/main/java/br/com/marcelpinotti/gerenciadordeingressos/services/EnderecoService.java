@@ -5,9 +5,7 @@ import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectExistsException;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundException;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.EnderecoRepository;
-import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepComLetras;
-import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepSemHifen;
-import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepFormatado;
+import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.VerificarCep;
 import br.com.marcelpinotti.gerenciadordeingressos.services.viaCepService.ViaCepService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,10 +21,14 @@ public class EnderecoService {
     private ViaCepService viaCepService;
     private ModelMapper mapper;
 
-    public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService, ModelMapper mapper) {
+    private VerificarCep verificarCep;
+
+    public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService,
+                           ModelMapper mapper, VerificarCep verificarCep) {
         this.enderecoRepository = enderecoRepository;
         this.viaCepService = viaCepService;
         this.mapper = mapper;
+        this.verificarCep = verificarCep;
     }
 
     private Endereco buscarEnderecoPorCepViaCEP(String cep) {
@@ -51,7 +53,9 @@ public class EnderecoService {
 
     public EnderecoDTO buscarEnderecoPorCep(String cep) {
 
-        Optional<Endereco> enderecoOptional = enderecoRepository.findById(cep);
+        String cepFormatado = String.valueOf(verificarCep.vericiacaoDeCep(cep));
+
+        Optional<Endereco> enderecoOptional = enderecoRepository.findById(cepFormatado);
 
         if (enderecoOptional.isPresent()){
             return mapper.map(enderecoOptional.get(), EnderecoDTO.class);
@@ -71,19 +75,9 @@ public class EnderecoService {
         return listaEnderecos;
     }
 
-    private String formatarCep(String cep) {
-
-        String validar = cep.substring(5,6);
-
-        if(!validar.equals("-"))
-            cep = cep.substring(0, 5) + '-' + cep.substring(5);
-
-        return cep;
-    }
-
     public Endereco salvarEndereco(String cep) {
 
-        String cepFormatado = String.valueOf(new CepSemHifen(new CepComLetras(new CepFormatado())));
+        String cepFormatado = verificarCep.vericiacaoDeCep(cep);
 
         buscarEnderecoPorCepParaSalvar(cepFormatado);
         Endereco enderecoViaCep = buscarEnderecoPorCepViaCEP(cepFormatado);
@@ -92,19 +86,19 @@ public class EnderecoService {
     }
 
     public void deletarEndereco(String cep) {
-        buscarEnderecoPorCep(cep);
 
-        enderecoRepository.deleteById(cep);
+        EnderecoDTO enderecoDTO = buscarEnderecoPorCep(cep);
+
+        enderecoRepository.deleteById(enderecoDTO.getCep());
     }
 
     public Endereco atualizarEndereco(String cep, EnderecoDTO enderecoAtualizado) {
 
-        String cepFormatado = formatarCep(cep);
-        buscarEnderecoPorCep(cepFormatado);
+        EnderecoDTO enderecoDTO = buscarEnderecoPorCep(cep);
 
         Endereco endereco = new Endereco();
 
-        endereco.setCep(cepFormatado);
+        endereco.setCep(enderecoDTO.getCep());
         endereco.setLogradouro(enderecoAtualizado.getLogradouro());
         endereco.setBairro(enderecoAtualizado.getBairro());
         endereco.setLocalidade(enderecoAtualizado.getLocalidade());

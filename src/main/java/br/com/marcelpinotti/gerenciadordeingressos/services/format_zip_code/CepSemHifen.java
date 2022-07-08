@@ -1,6 +1,12 @@
 package br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CepSemHifen extends FormatarCep {
+
+    public CepSemHifen(){
+    }
 
     public CepSemHifen(FormatarCep proximo) {
         super(proximo);
