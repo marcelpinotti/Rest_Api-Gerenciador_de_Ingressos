@@ -1,16 +1,20 @@
 package br.com.marcelpinotti.gerenciadordeingressos.exception.handler;
 
+import br.com.marcelpinotti.gerenciadordeingressos.exception.ErrorObject;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectExistsException;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundException;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ObjectNotFoundException.class)
@@ -42,10 +46,30 @@ public class ControllerExceptionHandler {
 
         String message = "Possivelmente o CEP digitado é inválido, o mesmo só aceita números. Exemplos, 12345678 ou 12345-678";
 
-
         StandardError error = new StandardError(System.currentTimeMillis(), status.value(), "Não encontrado",
                 message, request.getRequestURI());
 
         return ResponseEntity.status(status).body(error);
     }
+
+    private List<ErrorObject> getErrors(ConstraintViolationException ex) {
+        return ex.getConstraintViolations().stream()
+                .map(error -> new ErrorObject(error.getMessage(), error.getPropertyPath().toString()))
+                .collect(Collectors.toList());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardErrorValidation> notValid(ConstraintViolationException exception) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        String message = "Campos inválidos";
+
+        List<ErrorObject> errorObjectList = getErrors(exception);
+
+        StandardErrorValidation error = new StandardErrorValidation(System.currentTimeMillis(),
+                                            status.value(), message, errorObjectList);
+
+        return ResponseEntity.status(status).body(error);
+    }
+
 }
