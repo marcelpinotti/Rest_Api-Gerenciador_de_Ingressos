@@ -20,7 +20,6 @@ public class EnderecoService {
     private EnderecoRepository enderecoRepository;
     private ViaCepService viaCepService;
     private ModelMapper mapper;
-
     private VerificarCep verificarCep;
 
     public EnderecoService(EnderecoRepository enderecoRepository, ViaCepService viaCepService,
@@ -57,7 +56,7 @@ public class EnderecoService {
 
         Optional<Endereco> enderecoOptional = enderecoRepository.findById(cepFormatado);
 
-        if (enderecoOptional.isPresent()){
+        if (enderecoOptional.isPresent()) {
             return mapper.map(enderecoOptional.get(), EnderecoDTO.class);
         } else {
             throw new ObjectNotFoundException("Endereço não encontrado");

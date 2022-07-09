@@ -45,7 +45,8 @@ public class EnderecoController {
     }
 
     @PutMapping(value = "/{cep}")
-    public ResponseEntity<Endereco> atualizarEndereco (@PathVariable("cep") String cep, @RequestBody @Valid EnderecoDTO enderecoAtualizado) {
+    public ResponseEntity<Endereco> atualizarEndereco (@PathVariable("cep") String cep,
+                                                       @RequestBody @Valid EnderecoDTO enderecoAtualizado) {
         Endereco endereco = enderecoService.atualizarEndereco(cep, enderecoAtualizado);
         return ResponseEntity.ok().body(endereco);
     }

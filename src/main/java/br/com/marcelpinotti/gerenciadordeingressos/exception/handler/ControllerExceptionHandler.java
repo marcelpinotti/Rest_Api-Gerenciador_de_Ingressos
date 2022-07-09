@@ -6,6 +6,7 @@ import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundExcep
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -40,8 +41,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<StandardError> badRequest(FeignException exception,
-                                                      HttpServletRequest request) {
+    public ResponseEntity<StandardError> badRequest(HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         String message = "Possivelmente o CEP digitado é inválido, o mesmo só aceita números. Exemplos, 12345678 ou 12345-678";
@@ -67,9 +67,21 @@ public class ControllerExceptionHandler {
         List<ErrorObject> errorObjectList = getErrors(exception);
 
         StandardErrorValidation error = new StandardErrorValidation(System.currentTimeMillis(),
-                                            status.value(), message, errorObjectList);
+                status.value(), message, errorObjectList);
 
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<StandardError> badRequestPath(HttpRequestMethodNotSupportedException exception,
+                                                        HttpServletRequest request) {
+        HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
+
+        String message = "O erro está na URI, o CEP não pode ser nulo";
+
+        StandardError error = new StandardError(System.currentTimeMillis(), status.value(), message,
+                exception.getLocalizedMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(status).body(error);
+    }
 }
