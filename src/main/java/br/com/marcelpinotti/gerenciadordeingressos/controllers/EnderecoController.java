@@ -26,13 +26,13 @@ public class EnderecoController {
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping (value = "/{cep}")
+    @GetMapping (value = "/cep/{cep}")
     public ResponseEntity<EnderecoDTO> buscarEnderecoPorCep(@PathVariable("cep") String cep) {
             EnderecoDTO endereco = enderecoService.buscarEnderecoPorCep(cep);
             return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping
+    @GetMapping(value = "/todos")
     public ResponseEntity<List<EnderecoDTO>> buscarTodosOsEnderecos() {
         List<EnderecoDTO> enderecos = enderecoService.listarTodosOsEnderecos();
         return ResponseEntity.ok(enderecos);
