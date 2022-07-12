@@ -1,15 +1,12 @@
 package br.com.marcelpinotti.gerenciadordeingressos.exception.handler;
 
 import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
-import br.com.marcelpinotti.gerenciadordeingressos.exception.ErrorObject;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectExistsException;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundException;
-import feign.FeignException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -18,10 +15,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import javax.validation.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 class ControllerExceptionHandlerTest {

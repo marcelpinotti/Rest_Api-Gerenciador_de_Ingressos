@@ -1,6 +1,5 @@
 package br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code;
 
-import br.com.marcelpinotti.gerenciadordeingressos.services.format_zip_code.CepFormatado;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ public class CepFormatadoTest {
 
         String consultaCep = cepFormatado.formatar(cep);
 
-        Assertions.assertEquals("03201-000", cep);
+        Assertions.assertEquals("03201-000", consultaCep);
 
     }
 }
