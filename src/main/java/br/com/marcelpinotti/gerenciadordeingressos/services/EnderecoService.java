@@ -84,6 +84,21 @@ public class EnderecoService {
         return enderecoRepository.save(enderecoViaCep);
     }
 
+    public EnderecoDTO salvarEnderecoPeloLocalDeEvento(String cep) {
+
+        String cepFormatado = String.valueOf(verificarCep.vericiacaoDeCep(cep));
+
+        Optional<Endereco> enderecoOptional = enderecoRepository.findById(cepFormatado);
+
+        if (enderecoOptional.isPresent()) {
+            return mapper.map(enderecoOptional, EnderecoDTO.class);
+        } else {
+            Endereco enderecoViaCep = buscarEnderecoPorCepViaCEP(cepFormatado);
+            enderecoRepository.save(enderecoViaCep);
+            return mapper.map(enderecoViaCep, EnderecoDTO.class);
+        }
+    }
+
     public void deletarEndereco(String cep) {
 
         EnderecoDTO enderecoDTO = buscarEnderecoPorCep(cep);
