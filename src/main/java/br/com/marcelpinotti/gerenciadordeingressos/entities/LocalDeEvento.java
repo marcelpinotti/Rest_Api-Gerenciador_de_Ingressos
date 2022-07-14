@@ -23,6 +23,10 @@ public class LocalDeEvento implements Serializable {
     @Column(name = "nome_do_local")
     private String nome;
 
+    @NotEmpty(message = "Informe a capacidade máxima do local de evento")
+    @Column(name = "capacidade")
+    private Integer capacidade;
+
     @Valid
     @ManyToOne
     @JoinColumn(name = "endereco_cep")
@@ -31,9 +35,10 @@ public class LocalDeEvento implements Serializable {
     public LocalDeEvento() {
     }
 
-    public LocalDeEvento(Long id, String nome, Endereco endereco) {
+    public LocalDeEvento(Long id, String nome, Integer capacidade, Endereco endereco) {
         this.id = id;
         this.nome = nome;
+        this.capacidade = capacidade;
         this.endereco = endereco;
     }
 
@@ -52,6 +57,14 @@ public class LocalDeEvento implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Integer getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(Integer capacidade) {
+        this.capacidade = capacidade;
     }
 
     public Endereco getEndereco() {

@@ -6,13 +6,16 @@ public class SalvarLocalDeEventoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String nome;
+
+    private Integer capacidade;
     private String endereco;
 
     public SalvarLocalDeEventoDTO() {
     }
 
-    public SalvarLocalDeEventoDTO(String nome, String endereco) {
+    public SalvarLocalDeEventoDTO(String nome, Integer capacidade, String endereco) {
         this.nome = nome;
+        this.capacidade = capacidade;
         this.endereco = endereco;
     }
 
@@ -22,6 +25,14 @@ public class SalvarLocalDeEventoDTO implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Integer getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(Integer capacidade) {
+        this.capacidade = capacidade;
     }
 
     public String getEndereco() {

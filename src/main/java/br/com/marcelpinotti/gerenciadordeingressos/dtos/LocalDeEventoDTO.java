@@ -8,14 +8,16 @@ public class LocalDeEventoDTO implements Serializable {
 
     private Long id;
     private String nome;
+    private Integer capacidade;
     private EnderecoDTO endereco;
 
     public LocalDeEventoDTO() {
     }
 
-    public LocalDeEventoDTO(Long id, String nome, EnderecoDTO endereco) {
+    public LocalDeEventoDTO(Long id, String nome, Integer capacidade, EnderecoDTO endereco) {
         this.id = id;
         this.nome = nome;
+        this.capacidade = capacidade;
         this.endereco = endereco;
     }
 
@@ -34,6 +36,14 @@ public class LocalDeEventoDTO implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Integer getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(Integer capacidade) {
+        this.capacidade = capacidade;
     }
 
     public EnderecoDTO getEndereco() {

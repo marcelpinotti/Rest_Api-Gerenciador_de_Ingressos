@@ -58,6 +58,7 @@ public class LocalDeEventoService {
 
         LocalDeEventoDTO localDeEventoDTO = new LocalDeEventoDTO();
         localDeEventoDTO.setNome(salvarLocalDeEventoDTO.getNome());
+        localDeEventoDTO.setCapacidade(salvarLocalDeEventoDTO.getCapacidade());
         localDeEventoDTO.setEndereco(enderecoDTO);
 
         LocalDeEvento localDeEvento = modelMapper.map(localDeEventoDTO, LocalDeEvento.class);
@@ -77,6 +78,7 @@ public class LocalDeEventoService {
                                 .salvarEnderecoPeloLocalDeEvento(salvarLocalDeEventoDTO.getEndereco());
 
         localDeEventoDTO.setNome(salvarLocalDeEventoDTO.getNome());
+        localDeEventoDTO.setCapacidade(salvarLocalDeEventoDTO.getCapacidade());
         localDeEventoDTO.setEndereco(enderecoDTO);
         LocalDeEvento localDeEvento = modelMapper.map(localDeEventoDTO, LocalDeEvento.class);
 
