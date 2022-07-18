@@ -7,6 +7,7 @@ import br.com.marcelpinotti.gerenciadordeingressos.services.LocalDeEventoService
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class LocalDeEventoController {
     }
 
     @PostMapping
-    public ResponseEntity<LocalDeEvento> salvarLocalDeEvento(@RequestBody SalvarLocalDeEventoDTO localDeEventoDTO) {
+    public ResponseEntity<LocalDeEvento> salvarLocalDeEvento(@RequestBody @Valid SalvarLocalDeEventoDTO localDeEventoDTO) {
         LocalDeEvento localDeEvento = localDeEventoService.salvarLocalDeEvento(localDeEventoDTO);
         return ResponseEntity.ok(localDeEvento);
     }
@@ -45,7 +46,7 @@ public class LocalDeEventoController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<LocalDeEvento> atualizarLocalDeEvento(@PathVariable("id") Long id,
-                                                                @RequestBody SalvarLocalDeEventoDTO salvarLocalDeEventoDTO) {
+                                                                @RequestBody @Valid SalvarLocalDeEventoDTO salvarLocalDeEventoDTO) {
         LocalDeEvento local = localDeEventoService.atualizarLocalDeEvento(id, salvarLocalDeEventoDTO);
         return ResponseEntity.ok().body(local);
     }

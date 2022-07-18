@@ -5,7 +5,10 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -23,7 +26,8 @@ public class LocalDeEvento implements Serializable {
     @Column(name = "nome_do_local")
     private String nome;
 
-    @NotEmpty(message = "Informe a capacidade máxima do local de evento")
+    @NotNull(message = "Informe a capacidade máxima do local de evento")
+    @Positive(message = "A Capacidade precisa ser maior que 0")
     @Column(name = "capacidade")
     private Integer capacidade;
 

@@ -178,8 +178,6 @@ public class EnderecoServiceTest {
         Assertions.assertEquals(BAIRRO, enderecoConsultado.getBairro());
         Assertions.assertEquals(CIDADE, enderecoConsultado.getLocalidade());
         Assertions.assertEquals(UF, enderecoConsultado.getUf());
-
-
     }
 
     @Test

@@ -3,6 +3,7 @@ package br.com.marcelpinotti.gerenciadordeingressos.services;
 import br.com.marcelpinotti.gerenciadordeingressos.dtos.EnderecoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.dtos.LocalDeEventoDTO;
 import br.com.marcelpinotti.gerenciadordeingressos.dtos.SalvarLocalDeEventoDTO;
+import br.com.marcelpinotti.gerenciadordeingressos.entities.Endereco;
 import br.com.marcelpinotti.gerenciadordeingressos.entities.LocalDeEvento;
 import br.com.marcelpinotti.gerenciadordeingressos.exception.ObjectNotFoundException;
 import br.com.marcelpinotti.gerenciadordeingressos.repositories.LocalDeEventoRepository;
@@ -51,6 +52,17 @@ public class LocalDeEventoService {
         }
     }
 
+    private LocalDeEvento buscarLocalDeEventoPorIdParaAtualizar(Long id) {
+
+        Optional<LocalDeEvento> localOptional = localDeEventoRepository.findById(id);
+
+        if(localOptional.isPresent()) {
+            return localOptional.get();
+        } else {
+            throw new ObjectNotFoundException("Local de Evento não encontrato");
+        }
+    }
+
     public LocalDeEvento salvarLocalDeEvento(SalvarLocalDeEventoDTO salvarLocalDeEventoDTO) {
 
         EnderecoDTO enderecoDTO = enderecoService
@@ -66,22 +78,23 @@ public class LocalDeEventoService {
         return localDeEventoRepository.save(localDeEvento);
     }
 
-    public void deletarLocalDeEvento (Long id) {
+    public void deletarLocalDeEvento(Long id) {
         buscarLocalDeEventoPorId(id);
         localDeEventoRepository.deleteById(id);
     }
 
     public LocalDeEvento atualizarLocalDeEvento(Long id, SalvarLocalDeEventoDTO salvarLocalDeEventoDTO) {
 
-        LocalDeEventoDTO localDeEventoDTO = buscarLocalDeEventoPorId(id);
+        LocalDeEvento localDeEvento = buscarLocalDeEventoPorIdParaAtualizar(id);
         EnderecoDTO enderecoDTO = enderecoService
-                                .salvarEnderecoPeloLocalDeEvento(salvarLocalDeEventoDTO.getEndereco());
+                                .salvarEnderecoPeloLocalDeEvento(String.valueOf(salvarLocalDeEventoDTO.getEndereco()));
 
-        localDeEventoDTO.setNome(salvarLocalDeEventoDTO.getNome());
-        localDeEventoDTO.setCapacidade(salvarLocalDeEventoDTO.getCapacidade());
-        localDeEventoDTO.setEndereco(enderecoDTO);
-        LocalDeEvento localDeEvento = modelMapper.map(localDeEventoDTO, LocalDeEvento.class);
+        Endereco endereco = modelMapper.map(enderecoDTO, Endereco.class);
 
+        localDeEvento.setId(id);
+        localDeEvento.setNome(salvarLocalDeEventoDTO.getNome());
+        localDeEvento.setCapacidade(salvarLocalDeEventoDTO.getCapacidade());
+        localDeEvento.setEndereco(endereco);
         localDeEventoRepository.save(localDeEvento);
 
         return localDeEvento;
